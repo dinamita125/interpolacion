@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sistema académico para interpolación y comparación de métodos numéricos.">
+  <title>NuméricaLab · Interpolación y Aproximación</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="hero"><nav class="nav wide"><a class="brand" href="#inicio"><span class="brand-mark">N</span><span>NuméricaLab<small>Métodos numéricos</small></span></a><div class="nav-actions"><button class="icon-btn" id="themeToggle" title="Cambiar tema" aria-label="Cambiar tema">☾</button><button class="outline light" id="openHelp">Manual de usuario</button></div></nav>
+  <div class="hero-content wide" id="inicio"><div><div class="eyebrow">Universidad Amazónica de Pando · Ingeniería de Sistemas</div><h1>Interpolación y aproximación, <span>explicadas paso a paso.</span></h1><p>Ingresa tus datos, compara cuatro métodos numéricos y obtén una visualización clara del procedimiento y el resultado.</p></div><div class="hero-badge"><strong>4</strong><span>métodos<br>integrados</span></div></div>
+</header>
+<main class="wrap">
+  <section class="quick-start"><div><strong>Comienza con un ejemplo</strong><span>Configura los datos con un clic</span></div><div class="toolbar"><button class="secondary" id="exampleLinear">Lineal</button><button class="secondary" id="examplePoly">Lagrange / Newton</button><button class="secondary" id="exampleLeast">Mínimos cuadrados</button></div></section>
+  <div class="layout">
+    <section class="card input-card reveal">
+      <div class="card-heading"><span class="step">1</span><div><h2>Configura el cálculo</h2><p>Introduce los pares ordenados y el valor objetivo.</p></div></div>
+      <label for="points">Pares ordenados (X, Y)</label><textarea id="points" spellcheck="false" aria-describedby="pointsHint">1, 5
+5, 13</textarea><p class="hint" id="pointsHint">Un punto por línea. Separa X e Y con coma, punto y coma o espacio. Usa punto decimal.</p>
+      <div class="field-grid"><div><label for="method">Método numérico</label><select id="method"><option value="linear">Lineal por tramos</option><option value="lagrange">Lagrange</option><option value="newton">Newton</option><option value="least">Mínimos cuadrados</option></select></div><div><label for="target">Valor X objetivo</label><input id="target" type="number" step="any" value="3" placeholder="Ej. 3"></div></div>
+      <div class="actions"><button id="calculate">Calcular resultado</button><button class="secondary" id="clear">Limpiar</button></div><div class="error" id="error" role="alert"></div><div class="success" id="success" role="status">Cálculo completado correctamente.</div>
+      <details class="info-box"><summary>Recomendaciones para datos confiables</summary><p>Usa al menos dos puntos con valores X distintos. Para Lagrange y Newton se admiten hasta ocho puntos. Evita valores extremadamente grandes o puntos X casi idénticos.</p></details>
+    </section>
+    <section class="card result-card reveal">
+      <div class="card-heading result-heading"><span class="step">2</span><div><h2>Analiza el resultado</h2><p>Estimación, gráfica, procedimiento y comparación.</p></div><span class="status-pill" id="statusPill">Listo</span></div>
+      <div class="result-hero"><div><div class="kicker">Valor estimado</div><div class="result-value" id="resultValue">Y = 9</div><div class="result-sub" id="resultSub">Lineal · X = 3</div></div><div class="result-icon">ƒ(x)</div></div>
+      <div class="stats"><div class="stat"><small>Puntos</small><strong id="countStat">2</strong></div><div class="stat"><small>Método</small><strong id="methodStat">Lineal</strong></div><div class="stat"><small>Estimación</small><strong id="typeStat">Interpolación</strong></div></div>
+      <div class="tabs" role="tablist"><button class="tab active" data-tab="graph">Gráfica</button><button class="tab" data-tab="data">Datos</button><button class="tab" data-tab="procedure">Procedimiento</button><button class="tab" data-tab="compare">Comparación</button></div>
+      <div class="tab-panel active" id="panel-graph"><canvas id="plot" width="1000" height="500" aria-label="Gráfica de datos y función calculada"></canvas><div class="legend"><span><i class="dot blue"></i>Datos</span><span><i class="dot orange"></i>Estimación</span><span><i class="line-key"></i>Función</span></div></div>
+      <div class="tab-panel" id="panel-data"><div class="table-wrap"><table><thead><tr><th>Punto</th><th>X</th><th>Y</th></tr></thead><tbody id="dataTable"></tbody></table></div></div>
+      <div class="tab-panel" id="panel-procedure"><div class="procedure" id="procedure"></div></div>
+      <div class="tab-panel" id="panel-compare"><p class="panel-note">Resultados con los mismos datos y el mismo valor X.</p><div class="comparison" id="comparison"></div></div>
+      <div class="export-bar"><span>Exportar evidencia</span><button class="outline" id="exportCsv">Resultados CSV</button><button class="outline" id="exportPng">Gráfica PNG</button><button class="outline" id="printReport">Imprimir reporte</button></div>
+    </section>
+  </div>
+</main>
+<footer><div class="wide"><div class="brand footer-brand"><span class="brand-mark">N</span><span>NuméricaLab<small>Proyecto académico · Métodos Numéricos</small></span></div><p>HTML · CSS · JavaScript · Ejecución local</p></div></footer>
+<div class="modal" id="helpModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="manualTitle"><div class="modal-backdrop" data-close-modal></div><div class="modal-content"><div class="modal-head"><div><span class="eyebrow dark">GUÍA RÁPIDA</span><h2 id="manualTitle">Manual de usuario</h2></div><button class="icon-btn" data-close-modal aria-label="Cerrar manual">×</button></div><div class="manual-nav"><a href="#m-start">Inicio</a><a href="#m-methods">Métodos</a><a href="#m-results">Resultados</a><a href="#m-errors">Errores</a></div><div class="manual-body">
+  <section id="m-start"><h3>1. Cómo realizar un cálculo</h3><ol><li>Escribe al menos dos pares ordenados, uno por línea: <code>1, 5</code>.</li><li>Selecciona el método numérico.</li><li>Ingresa el valor X que deseas estimar.</li><li>Presiona <strong>Calcular resultado</strong>.</li><li>Revisa las pestañas de gráfica, datos, procedimiento y comparación.</li></ol></section>
+  <section id="m-methods"><h3>2. ¿Qué método debo elegir?</h3><div class="method-guide"><article><strong>Lineal por tramos</strong><p>Une puntos consecutivos con rectas. Es simple y adecuado para estimaciones locales.</p></article><article><strong>Lagrange</strong><p>Construye un polinomio que pasa por todos los puntos. Útil con pocos datos.</p></article><article><strong>Newton</strong><p>Usa diferencias divididas y permite una construcción incremental.</p></article><article><strong>Mínimos cuadrados</strong><p>Ajusta una recta que representa la tendencia sin pasar necesariamente por cada punto.</p></article></div></section>
+  <section id="m-results"><h3>3. Interpretación</h3><p><strong>Interpolación</strong>: X está dentro del rango. <strong>Extrapolación</strong>: X está fuera y tiene mayor incertidumbre. En mínimos cuadrados se presenta como <strong>Ajuste</strong>.</p><p>La comparación muestra cómo cambia la estimación según el modelo; no implica que todos los métodos sean igualmente apropiados.</p></section>
+  <section id="m-errors"><h3>4. Errores frecuentes</h3><ul><li>Cada línea debe tener exactamente X e Y.</li><li>Los valores X no pueden repetirse.</li><li>Usa punto para decimales: <code>2.5</code>.</li><li>Lagrange y Newton admiten hasta ocho puntos.</li></ul></section>
+  <div class="manual-actions"><a class="button-link secondary" href="manual.html" target="_blank">Abrir manual completo</a><button id="printManual">Imprimir esta guía</button></div>
+</div></div></div>
+<div class="toast" id="toast" role="status"></div><script src="script.js"></script>
+</body></html>
